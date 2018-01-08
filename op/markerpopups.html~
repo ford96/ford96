@@ -82,8 +82,9 @@
         controls['selector'].activate();
     </script>
     <form action="https://raw.githubusercontent.com/techlinked/techlinked.github.io/master/bitches/quartus/bitch001/img/01.png">
-   	 <input type="submit" value="Выгрузить отчет в excel" />
+   	 <input type="submit" value="Go to Google" />
 	</form>
+    <input type="button" value="Выгрузить отчет в excel" url="er">
 </body>
 
 </html>
