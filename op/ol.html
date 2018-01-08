@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>OSM Demo</title>
+    <style type="text/css">
+      html, body, #basicMap {
+          width: 100%;
+          height: 90%;
+          margin: 1;
+      }
+    </style>
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script>
+	function init() {      	
+		var mapnik = new OpenLayers.Layer.OSM();		
+		var markers = new OpenLayers.Layer.Markers( "Markers" );     
+		    
+		map = new OpenLayers.Map("basicMap",{                    
+			controls: [
+				new OpenLayers.Control.Navigation(),
+				new OpenLayers.Control.PanZoomBar(),
+				new OpenLayers.Control.LayerSwitcher({'ascending':false}),
+				new OpenLayers.Control.Permalink(),
+				new OpenLayers.Control.ScaleLine(),
+				new OpenLayers.Control.Permalink('permalink'),
+				new OpenLayers.Control.MousePosition(),
+				new OpenLayers.Control.OverviewMap(),		
+			]
+		});
+
+		var icon = new OpenLayers.Icon('http://bgskspartak.ru/img/map-marker.png');
+		
+		var coordinates = [
+			60.59130290006001, 56.79892609999999,
+			60.61570260005001, 56.78892609999999,
+			60.63570230004001, 56.75892609999999,
+			60.62570240000001, 56.83892609999999,
+			60.65570210000001, 56.84892609999999,
+			60.54570290000001, 56.85892609999999,
+			60.66570230000001, 56.86892609999999,
+			60.67570450000001, 56.83892609999999,
+			60.55700550000001, 56.86892609999999,
+			60.60000750000001, 56.88892609999999
+		];
+		
+		var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+		
+		var feature = new OpenLayers.Feature.Vector(
+            new OpenLayers.Geometry.Point( -0.1279688, 51.5077286 ).transform(
+					new OpenLayers.Projection("EPSG:4326"), 
+					new OpenLayers.Projection("EPSG:900913") ),
+            {description:'This is the value of<br>the description attribute'} ,
+            {externalGraphic: icon, graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
+        );    
+		vectorLayer.addFeatures(feature);
+		map.addLayer(vectorLayer);
+		/*
+		for (var i = 0; i < 9; i++) {
+		
+			markers.addMarker(new OpenLayers.Marker(
+				new OpenLayers.LonLat(coordinates.shift(), coordinates.shift()).transform(
+					new OpenLayers.Projection("EPSG:4326"), 
+					new OpenLayers.Projection("EPSG:900913") ), icon.clone()));
+			//markers.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+			
+			map.addLayers([mapnik, markers]);
+		
+		}
+		*/
+		map.setCenter(new OpenLayers.LonLat(60.60570250000001,56.83892609999999) .transform(
+				new OpenLayers.Projection("EPSG:4326"), 
+				new OpenLayers.Projection("EPSG:900913") ), 13 );
+				
+		//Add a selector control to the vectorLayer with popup functions
+		var controls = {
+			selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup, onUnselect: destroyPopup })
+		};
+
+		function createPopup(feature) {
+			feature.popup = new OpenLayers.Popup.FramedCloud("pop",
+			feature.geometry.getBounds().getCenterLonLat(),
+			null,
+			'<div class="markerContent">'+feature.attributes.description+'</div>',
+			null,
+			true,
+			function() { controls['selector'].unselectAll(); }
+			);
+			//feature.popup.closeOnMove = true;
+			map.addPopup(feature.popup);
+		}
+
+		function destroyPopup(feature) {
+			feature.popup.destroy();
+			feature.popup = null;
+		}
+	
+		map.addControl(controls['selector']);
+		controls['selector'].activate();
+	
+      }
+	  
+	</script>
+	</head>
+	<body onload="init();">
+	<div id="basicMap"></div>
+  </body>
+</html>
