@@ -8,11 +8,13 @@
           width: 100%;
           height: 90%;
           margin: 1;
+          font-size: 16px;
+          cursor: pointer;
       }
     </style>
 </head>
 
-<body>
+<body style:"background-color:powderblue;">
     <div id="mapdiv"></div>
     <script src="data.js"></script>
     <script src="https://openlayers.org/api/OpenLayers.js"></script>
@@ -83,7 +85,12 @@
     </script>
     <form action="https://github.com/ford96/ford96.github.io/raw/master/op/report.xls">
    	 <input type="submit" value="Выгрузить отчет в excel" />
+			
 	</form>
+	<button>Default Button</button>
+			<a href="#" class="button">Link Button</a>
+			<button class="button">Button</button>
+			<input type="button" class="button" value="Input Button">
 </body>
 
 </html>
