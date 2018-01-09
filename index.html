@@ -41,8 +41,8 @@
             var feature = new OpenLayers.Feature.Vector(
                 new OpenLayers.Geometry.Point(data[i].x, data[i].y).transform(epsg4326, projectTo), {
                     description: 'Сотрудник: ' + data[i].worker + '<br>' +
-                        data[i].date + '<br>' +
-                        data[i].number + '<br>' +
+                        'Дата: ' + data[i].date + '<br>' +
+                        'Номер: ' + data[i].number + '<br>' +
                         '<img src="' + data[i].imageurl + '" alt="auto" width="200">'
                 }, {
                     externalGraphic: 'http://bgskspartak.ru/img/map-marker.png',
